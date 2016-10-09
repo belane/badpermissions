@@ -1,6 +1,6 @@
 # badpermissions
 
-Escalate example. Service|Process|Task bad permissions checker.
+Escalate example; Service|Process|Task bad permissions checker & Hijackable Service|Task path checker.
 
 ```bash
 PS C:\bp> .\badpermissions.ps1
@@ -20,15 +20,23 @@ __________________________________________________belane__
 [ ] - TestGroup
 [ ]
 [+] Cheking 13 Process ...
-[!]  Found vulnerable: C:\Tools\macror.exe
-[!]  Found vulnerable: C:\Tools\putty.exe
+[!]  Write rights: C:\Tools\macror.exe
+[!]  Write rights: C:\Tools\putty.exe
+[!]  Write rights: C:\Users\noprivs\AppData\Local\Titanapp\Titan.exe
 [ ]
 [+] Cheking 38 Services ...
-[!]  Found vulnerable: C:\Tools\vulnerable_service.exe
-[!]  Found vulnerable: C:\Program Files\KMSpico\Service_KMS.exe
+[!]  Write rights: C:\Tools\vulnerable_service.exe
+[!]  Write rights: C:\Program Files\KMSpico\Service_KMS.exe
+[!]  Write rights: C:\Brand\SupportAssistAgent\bin\SupportAssist.exe
+[!]  Unquoted path: C:\Program Files\TunVPN\TunVPN Client.exe
+[!]  Unquoted path: C:\Program Files\Waves\MaxxAudio\WavesSysSvc64.exe
 [ ]
 [+] Cheking 39 Scheduled Tasks ...
-[!]  Found vulnerable: C:\Program Files\Microsoft Office\Office15\MsoSync.exe
+[!]  Write rights: C:\Program Files\Microsoft Office\Office15\MsoSync.exe
+[!]  Write rights: C:\Users\noprivs\AppData\Local\Titanapp\Update\TiUpdate.exe
+[!]  Unquoted path: C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\VSIXAutoUpdate.exe
+[!]  Unquoted path: %ProgramFiles%\Windows Defender\MpCmdRun.exe
+[!]  Unquoted path: C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe
 [ ]
 [ ]
 [ ] Done

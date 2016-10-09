@@ -1,6 +1,7 @@
 ﻿##
 ## Service|Process|Task bad permissions checker
-## 15/09/16
+## Hijackable Service|Task path checker
+## 09/10/16
 ##
 
 function checkModify ($path)
@@ -26,7 +27,7 @@ function checkModify ($path)
     }
 
 Clear-Host
-$banner = @"
+$banner = @'
 
  _         _                      _         _             
 | |_ ___ _| |   ___ ___ ___ _____|_|___ ___|_|___ ___ ___ 
@@ -35,7 +36,7 @@ $banner = @"
                |_| 
 __________________________________________________belane__
 
-"@
+'@
 $banner
 
 
@@ -67,41 +68,53 @@ Write-Host "[ ] "
 
 $processes = Get-Process | where {$_.Path} | select -ExpandProperty Path | sort -Unique
 Write-Host "[+] Cheking" $processes.Count "Process ..."
-foreach ($process in $processes)
+ForEach ($process in $processes)
     {
     if(checkModify ($process))
         {
-        Write-Host "[!]  Found vulnerable:" $process
+        Write-Host "[!]  Write rights:" $process
         ("Rights on Process "+$process)| out-file -filepath $logfile -append
         }
     }
 Write-Host "[ ] "
 
 
-$services = Get-WmiObject win32_service | where {$_.Pathname} |
+$services = Get-WmiObject win32_service | Where {$_.Pathname} |
     ForEach {$_.Pathname.Substring(0, $_.Pathname.IndexOf(".exe")+4).Replace("`"", "")
     } | sort -Unique
 Write-Host "[+] Cheking" $services.Count "Services ..."
-foreach ($service in $services)
+ForEach ($service in $services)
     {
     if(checkModify ($service))
         {
-        Write-Host "[!]  Found vulnerable:" $service
+        Write-Host "[!]  Write rights:" $service
         ("Rights on Service "+$service)| out-file -filepath $logfile -append
+        }
+    }
+Get-WmiObject win32_service | Where {$_.Pathname} |
+    ForEach { if(!$_.Pathname.StartsWith("`"") -and $_.Pathname.Substring(0, $_.Pathname.IndexOf(".exe")+4).Contains(" ")) {
+        Write-Host "[!]  Unquoted path:" $_.Pathname;
+        ("Hijackable Service "+$_.Pathname)| out-file -filepath $logfile -append;
         }
     }
 Write-Host "[ ] "
 
 
-$tasks = Get-ScheduledTask | ? {$_.State.value -ne "Disabled"} |
+$tasks = Get-ScheduledTask | Where {$_.State.value -ne "Disabled"} |
     ForEach-Object { $_.Actions.execute} | sort -Unique
 Write-Host "[+] Cheking" $tasks.Count "Scheduled Tasks ..."
-foreach ($task in $tasks)
+ForEach ($task in $tasks)
     {
     if(checkModify ($task))
         {
-        Write-Host "[!]  Found vulnerable:" $task
+        Write-Host "[!]  Write rights:" $task
         ("Rights on Task "+$task)| out-file -filepath $logfile -append
+        }
+    }
+Get-ScheduledTask | Where {$_.State.value -ne "Disabled" -and $_.Actions.execute} |
+    ForEach-Object { if(!$_.Actions.execute.StartsWith("`"") -and $_.Actions.execute.Contains(" ")) {
+        Write-Host "[!]  Unquoted path:" $_.Actions.execute;
+        ("Hijackable Task "+$_.Actions.execute)| out-file -filepath $logfile -append;
         }
     }
 Write-Host "[ ] "
