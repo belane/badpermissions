@@ -1,6 +1,6 @@
 # badpermissions
 
-Escalate example; Service|Process|Task bad permissions checker & Hijackable Service|Task path checker.
+Escalate example; Service|Process|Task bad permissions & hijackable Service path checker.
 
 ```bash
 PS C:\bp> .\badpermissions.ps1
@@ -34,9 +34,6 @@ __________________________________________________belane__
 [+] Cheking 39 Scheduled Tasks ...
 [!]  Write rights: C:\Program Files\Microsoft Office\Office15\MsoSync.exe
 [!]  Write rights: C:\Users\noprivs\AppData\Local\Titanapp\Update\TiUpdate.exe
-[!]  Unquoted path: C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\VSIXAutoUpdate.exe
-[!]  Unquoted path: %ProgramFiles%\Windows Defender\MpCmdRun.exe
-[!]  Unquoted path: C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe
 [ ]
 [ ]
 [ ] Done

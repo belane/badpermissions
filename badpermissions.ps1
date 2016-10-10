@@ -1,7 +1,7 @@
 ﻿##
 ## Service|Process|Task bad permissions checker
-## Hijackable Service|Task path checker
-## 09/10/16
+## Hijackable Service path checker
+## 10/10/16
 ##
 
 function checkModify ($path)
@@ -109,12 +109,6 @@ ForEach ($task in $tasks)
         {
         Write-Host "[!]  Write rights:" $task
         ("Rights on Task "+$task)| out-file -filepath $logfile -append
-        }
-    }
-Get-ScheduledTask | Where {$_.State.value -ne "Disabled" -and $_.Actions.execute} |
-    ForEach-Object { if(!$_.Actions.execute.StartsWith("`"") -and $_.Actions.execute.Contains(" ")) {
-        Write-Host "[!]  Unquoted path:" $_.Actions.execute;
-        ("Hijackable Task "+$_.Actions.execute)| out-file -filepath $logfile -append;
         }
     }
 Write-Host "[ ] "
